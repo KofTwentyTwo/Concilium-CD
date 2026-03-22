@@ -1,0 +1,25 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: concilium-backend
+  namespace: concilium
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - concilium.kof22.com
+      secretName: concilium-tls
+  rules:
+    - host: concilium.kof22.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: concilium-backend
+                port:
+                  name: http

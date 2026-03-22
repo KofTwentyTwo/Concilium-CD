@@ -1,0 +1,37 @@
+---
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: concilium-postgres
+  namespace: concilium
+spec:
+  teamId: concilium
+  numberOfInstances: 1
+  volume:
+    size: 10Gi
+  users:
+    concilium:
+      - superuser
+      - createdb
+  databases:
+    concilium: concilium
+  postgresql:
+    version: "17"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  enableConnectionPooler: true
+  connectionPooler:
+    numberOfInstances: 1
+    mode: transaction
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi

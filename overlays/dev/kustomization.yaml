@@ -1,0 +1,34 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: concilium-dev
+
+resources:
+  - ../../base/
+
+patches:
+  - target:
+      kind: Deployment
+      name: concilium-backend
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /metadata/namespace
+        value: concilium-dev
+
+  - target:
+      kind: Ingress
+      name: concilium-backend
+    patch: |-
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: concilium-dev.kof22.com
+      - op: replace
+        path: /spec/rules/0/host
+        value: concilium-dev.kof22.com
+      - op: replace
+        path: /spec/tls/0/secretName
+        value: concilium-dev-tls

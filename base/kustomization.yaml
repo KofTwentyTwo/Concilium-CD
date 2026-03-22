@@ -1,0 +1,28 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: concilium-prod
+
+labels:
+  - pairs:
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/part-of: concilium
+    includeSelectors: false
+
+resources:
+  - concilium-postgres.yaml
+  - concilium-minio-statefulset.yaml
+  - concilium-minio-service.yaml
+  - concilium-backend-serviceaccount.yaml
+  - concilium-deployment.yaml
+  - concilium-service.yaml
+  - concilium-ingress.yaml
+
+images:
+  - name: ghcr.io/koftwentytwo/concilium
+    newName: ghcr.io/koftwentytwo/concilium
+    newTag: develop
+  - name: ghcr.io/koftwentytwo/concilium-migrations
+    newName: ghcr.io/koftwentytwo/concilium-migrations
+    newTag: develop
